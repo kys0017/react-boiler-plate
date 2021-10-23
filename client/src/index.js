@@ -4,13 +4,24 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import {BrowserRouter} from "react-router-dom";
-
+import {Provider} from "react-redux";
 import 'antd/dist/antd.css'
+import {applyMiddleware, createStore} from "redux";
+import promiseMiddleware from 'redux-promise'
+import reduxThunk from 'redux-thunk'
+import reducer from "./_reducers";
+import { composeWithDevTools } from 'redux-devtools-extension'; // 리덕스 개발자 도구
+
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, reduxThunk)(createStore)
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+    <BrowserRouter>
+      <Provider store={createStoreWithMiddleware(reducer,
+          composeWithDevTools()
+          )} >
+            <App />
+      </Provider>
+    </BrowserRouter>,
   document.getElementById('root')
 );
 
